@@ -1,0 +1,163 @@
+$date
+	Sun Nov 05 13:05:59 2023
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module testbench $end
+$var wire 1 ! y $end
+$var wire 1 " r $end
+$var wire 1 # g $end
+$var reg 1 $ clk $end
+$var reg 1 % reset $end
+$scope module traffic $end
+$var wire 1 $ clk $end
+$var wire 1 # g $end
+$var wire 1 " r $end
+$var wire 1 % rst $end
+$var wire 1 ! y $end
+$var reg 3 & curr_state [2:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b0 &
+1%
+0$
+0#
+1"
+0!
+$end
+#5
+1$
+#10
+b1 &
+0$
+0%
+#15
+1$
+#20
+0"
+1!
+b10 &
+0$
+#25
+1$
+#30
+b11 &
+0$
+#35
+1$
+#40
+0!
+1#
+b100 &
+0$
+#45
+1$
+#50
+b101 &
+0$
+#55
+1$
+#60
+1"
+0#
+b0 &
+0$
+#65
+1$
+#70
+b1 &
+0$
+#75
+1$
+#80
+0"
+1!
+b10 &
+0$
+#85
+1$
+#90
+b11 &
+0$
+#95
+1$
+#100
+0!
+1#
+b100 &
+0$
+#105
+1$
+#110
+b101 &
+0$
+#115
+1$
+#120
+1"
+0#
+b0 &
+0$
+#125
+1$
+#130
+b1 &
+0$
+#135
+1$
+#140
+0"
+1!
+b10 &
+0$
+#145
+1$
+#150
+b11 &
+0$
+#155
+1$
+#160
+0!
+1#
+b100 &
+0$
+#165
+1$
+#170
+b101 &
+0$
+#175
+1$
+#180
+1"
+0#
+b0 &
+0$
+#185
+1$
+#190
+b1 &
+0$
+#195
+1$
+#200
+0"
+1!
+b10 &
+0$
+#205
+1$
+#210
+b11 &
+0$

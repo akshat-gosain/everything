@@ -1,0 +1,19 @@
+Hi!, I am Circle 1 and I am a Circle of colour Red with centre at (0, 0), radius = 5, perimeter = 31.41592653589793 
+and area = 78.53981633974483.
+Hi!, I am Circle 2 and I am a Circle of colour Blue with centre at (1, 2), radius = 3, perimeter = 18.84955592153876 and area = 28.274333882308138.
+Hi!, I am Circle 3 and I am a Circle of colour Green with centre at (3, 4), radius = 4, perimeter = 25.132741228718345 and area = 50.26548245743669.
+Is Point2D (2, 3) within Circle 1?
+YES
+Can we check if Point3D (-1, -2, -3) is within Circle 2?
+Cannot Check
+NO
+Hi!, I am Rectangle 1 and I am a Rectangle of colour Orange with centre at (0, 0), length = 6, breadth = 4, perimeter = 20.0 and area = 24.0.
+Hi!, I am Rectangle 2 and I am a Rectangle of colour Purple with centre at (1, 1), length = 8, breadth = 5, perimeter = 26.0 and area = 40.0.
+Hi!, I am Rectangle 3 and I am a Rectangle of colour Yellow with centre at (20, 20), length = 7, breadth = 3, perimeter = 20.0 and area = 21.0.
+Is Point2D (2, 3) within Rectangle 2?
+YES
+Is Point2D (2, 3) within Rectangle 3?
+NO
+Can we check if Point3D (-1, -2, -3) is within Rectangle 1?
+Cannot Check
+NO
