@@ -293,73 +293,35 @@ vector<int> countSmaller(vector<int>& nums) {
     // return ans;
     // }
 
-// A utility function to find maximum of two integers 
-int max(int a, int b) { 
-    return (a > b) ? a : b; 
-}
+    struct SubarrayInfo {
+    int sum;
+    int maxSum;
+    int leftMaxSum;
+    int rightMaxSum;
+};
 
-// A utility function to find maximum of three integers 
-int max(int a, int b, int c) { 
-    return max(max(a, b), c); 
-} 
-  
-// Find the maximum possible sum in arr[] such that arr[m] 
-// is part of it 
-int maxCrossingSum(int arr[], int l, int m, int h) { 
-    // Include elements on left of mid. 
-    int sum = 0; 
-    int left_sum = INT_MIN; 
-    for (int i = m; i >= l; i--) { 
-        sum = sum + arr[i]; 
-        if (sum > left_sum) 
-            left_sum = sum; 
-    } 
-  
-    // Include elements on right of mid 
-    sum = 0; 
-    int right_sum = INT_MIN; 
-    for (int i = m; i <= h; i++) { 
-        sum = sum + arr[i]; 
-        if (sum > right_sum) 
-            right_sum = sum; 
-    } 
-  
-    // Return sum of elements on left and right of mid 
-    // returning only left_sum + right_sum will fail for 
-    // [-2, 1] 
-    return max(left_sum + right_sum - arr[m], left_sum, right_sum); 
-} 
-  
-// Returns sum of maximum sum subarray in aa[l..h] 
-int maxSubArraySumm(int arr[], int l, int h) { 
-    // Invalid Range: low is greater than high 
-    if (l > h) 
-        return INT_MIN; 
-    // Base Case: Only one element 
-    if (l == h) 
-        return arr[l]; 
-  
-    // Find middle point 
-    int m = (l + h) / 2; 
-  
-    /* Return maximum of following three possible cases 
-            a) Maximum subarray sum in left half 
-            b) Maximum subarray sum in right half 
-            c) Maximum subarray sum such that the subarray 
-       crosses the midpoint */
-    return max(maxSubArraySumm(arr, l, m - 1), 
-               maxSubArraySumm(arr, m + 1, h), 
-               maxCrossingSum(arr, l, m, h)); 
-} 
-
-int maxSubArraySum(vector<int> &nums){
-    int l = 0; int h = nums.size()-1; int arr[nums.size()];
-    for(int i=0;i<nums.size();i++){
-        arr[i] = nums[i];
+    SubarrayInfo maxSubarraySum(const vector<int>& nums, int low, int high) {
+    SubarrayInfo result;
+    if (low == high) {  // Base case: single element.
+        result.sum = nums[low];
+        result.maxSum = nums[low];
+        result.leftMaxSum = nums[low];
+        result.rightMaxSum = nums[low];
+    } else {
+        int mid = low + (high - low) / 2;
+        SubarrayInfo leftSubarray = maxSubarraySum(nums, low, mid);
+        SubarrayInfo rightSubarray = maxSubarraySum(nums, mid + 1, high);
+        result.sum = leftSubarray.sum + rightSubarray.sum;
+        result.leftMaxSum = max(leftSubarray.leftMaxSum, leftSubarray.sum + rightSubarray.leftMaxSum);
+        result.rightMaxSum = max(rightSubarray.rightMaxSum, rightSubarray.sum + leftSubarray.rightMaxSum);
+        result.maxSum = max({leftSubarray.maxSum, rightSubarray.maxSum, leftSubarray.rightMaxSum + rightSubarray.leftMaxSum});
     }
-    return maxSubArraySumm(arr, l, h);
-
+    return result;
 }
+    int maxSubArray(vector<int>& nums) {
+        SubarrayInfo result = maxSubarraySum(nums,0,nums.size()-1);
+        return result.maxSum;
+    }
 
     // vector<int> maxSubArray(vector<int>& nums) {
     //     int n = nums.size();
@@ -643,6 +605,63 @@ vector<int> mergeSortedArrays(vector<int>& arr1, vector<int>& arr2) {
     return median;
 }
 
+// Function to merge two subarrays of arr[].
+// First subarray is arr[l..m]
+// Second subarray is arr[m+1..r]
+long long merge(long long* arr, long long lb, long long mid, long long ub) {
+  long long dup[ub - lb + 1];
+  long long res = 0;
+  for (long long i = 0; i < (ub - lb + 1); i++) {
+    dup[i] = arr[lb + i];
+  }
+
+  long long p1 = lb, p2 = mid + 1;
+  long long count = 0;
+  while (p1 <= mid && p2 <= ub) {
+    if (dup[p1 - lb] <= dup[p2 - lb]) {
+      arr[lb + count] = dup[p1 - lb];
+      p1++;
+    } else {
+      arr[lb + count] = dup[p2 - lb];
+      res += (mid - p1 + 1);
+      p2++;
+    }
+    count++;
+  }
+
+  while (p1 <= mid) {
+    arr[lb + count] = dup[p1 - lb];
+    count++;
+    p1++;
+  }
+
+  while (p2 <= ub) {
+    arr[lb + count] = dup[p2 - lb];
+    count++;
+    p2++;
+  }
+
+  return res;
+}
+
+// Function to sort an array arr[] of size n using
+// merge sort
+long long merge_sort(long long* arr, long long lb, long long ub) {
+  long long res = 0;
+  if (ub > lb) {
+    long long mid = lb + ((ub - lb) / 2);
+    res += merge_sort(arr, lb, mid);
+    res += merge_sort(arr, mid + 1, ub);
+    res += merge(arr, lb, mid, ub);
+  }
+  return res;
+}
+
+// Function to count inversions in an array arr[] of size n
+long long int inversionCount(long long arr[], long long N) {
+  // Call merge_sort and return the inversion count
+  return merge_sort(arr, 0, N - 1);
+}
     
 
 
