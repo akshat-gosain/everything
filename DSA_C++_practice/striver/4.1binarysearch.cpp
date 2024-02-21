@@ -303,6 +303,65 @@ int smallestDistancePair(vector<int>& nums, int k) {
     return low;
 }
 
+bool canPlace(vector<int> &arr, int tocheck, int k){
+        int noofcows = 1;
+        int last = arr[0];
+        for( int i=0; i<arr.size(); i++){
+            if(arr[i]-last >= tocheck){
+                noofcows++;
+                last = arr[i];
+            }
+        }
+        if(noofcows >= k) return true;
+        else return false;
+    }
+
+    int aggressivecowsleastdist(int n, int k, vector<int> &stalls) {
+        sort(stalls.begin(),stalls.end());
+        int low = 1;
+        int high = *max_element(stalls.begin(),stalls.end())-*min_element(stalls.begin(),stalls.end());
+        int mindist = 0;
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            if(canPlace(stalls,mid,k)){
+                mindist = mid;
+                low = mid+1;
+            }
+            else high = mid-1;
+        }
+        // Write your code here
+        return mindist;
+    }
+
+
+bool canSplit(vector<int>& sweetness, int tocheck, int k) {
+    int pieces = 0;
+    int current_sweetness = 0;
+    for (auto s : sweetness) {
+        current_sweetness += s;
+        if (current_sweetness >= tocheck) {
+            pieces++;
+            current_sweetness = 0;
+        }
+    }
+    return pieces >= k + 1;
+}
+
+int maximizeSweetness(vector<int>& sweetness, int k) {
+    int low = *min_element(sweetness.begin(), sweetness.end());
+    int high = accumulate(sweetness.begin(), sweetness.end(), 0);
+    while (low < high) {
+        int mid = low + (high - low + 1) / 2;
+        if (canSplit(sweetness, mid, k)) {
+            low = mid;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return low;
+}
+
+
 int main(){
     int n;
     cin >> n;
