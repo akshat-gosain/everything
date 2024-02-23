@@ -162,9 +162,39 @@ int missingNumber(vector<int>& nums) {
         
     }
     return maxLen;
+}
 
-    
-    
+int getLongestSubarray(vector<int>& a, int k) {
+    int n = a.size(); // size of the array.
+
+    map<int, int> preSumMap;
+    int sum = 0;
+    int maxLen = 0;
+    for (int i = 0; i < n; i++) {
+        //calculate the prefix sum till index i:
+        sum += a[i];
+
+        // if the sum = k, update the maxLen:
+        if (sum == k) {
+            maxLen = max(maxLen, i + 1);
+        }
+
+        // calculate the sum of remaining part i.e. x-k:
+        int rem = sum - k;
+
+        //Calculate the length and update maxLen:
+        if (preSumMap.find(rem) != preSumMap.end()) {
+            int len = i - preSumMap[rem];
+            maxLen = max(maxLen, len);
+        }
+
+        //Finally, update the map checking the conditions:
+        if (preSumMap.find(sum) == preSumMap.end()) {
+            preSumMap[sum] = i;
+        }
+    }
+
+    return maxLen;
 }
 
     string read(int n, vector<int> book, int target)
@@ -194,6 +224,20 @@ int missingNumber(vector<int>& nums) {
     }
     return { -1, -1};    
 }
+
+// string twoSum(int n, vector<int> &arr, int target) {
+//     sort(arr.begin(), arr.end());
+//     int left = 0, right = n - 1;
+//     while (left < right) {
+//         int sum = arr[left] + arr[right];
+//         if (sum == target) {
+//             return "YES";
+//         }
+//         else if (sum < target) left++;
+//         else right--;
+//     }
+//     return "NO";
+// }
 
 // void sortColors(vector<int>& nums){
 //         int hash[3] = {0};
@@ -662,7 +706,149 @@ long long int inversionCount(long long arr[], long long N) {
   // Call merge_sort and return the inversion count
   return merge_sort(arr, 0, N - 1);
 }
+
+int maxArea(vector<int>& height) {
+        int n=height.size();
+        int l=0;
+        int r=n-1;
+        int maxa = 0;
+        while(l<r){
+            if(min(height[l],height[r])*(r-l)>maxa) maxa = min(height[l],height[r])*(r-l);
+            if(height[l]<height[r]){l++;}else{r--;}
+        }
+        return maxa;
+    }
+
+vector<int> superiorElements(vector<int>&arr) {
+        int n = arr.size();
+        vector<int> ans;
+        int max = arr[n - 1];
+        ans.push_back(arr[n-1]);
+
+        for (int i = n - 2; i >= 0; i--)
+            if (arr[i] > max) {
+            ans.push_back(arr[i]);
+            max = arr[i];
+        }
+        return ans;
+}
+
+int lengthOfLongestSubstring(string s) {
+        vector < int > mpp(256, -1);
+
+      int left = 0, right = 0;
+      int n = s.size();
+      int len = 0;
+      while (right < n) {
+        if (mpp[s[right]] != -1)
+          left = max(mpp[s[right]] + 1, left);
+
+        mpp[s[right]] = right;
+
+        len = max(len, right - left + 1);
+        right++;
+      }
+      return len;
     
+    }
+
+    int findAllSubarraysWithGivenSum(vector < int > & arr, int k) {
+    int n = arr.size(); // size of the given array.
+    map mpp;
+    int preSum = 0, cnt = 0;
+
+    mpp[0] = 1; // Setting 0 in the map.
+    for (int i = 0; i < n; i++) {
+        // add current element to prefix Sum:
+        preSum += arr[i];
+
+        // Calculate x-k:
+        int remove = preSum - k;
+
+        // Add the number of subarrays to be removed:
+        cnt += mpp[remove];
+
+        // Update the count of prefix sum
+        // in the map.
+        mpp[preSum] += 1;
+    }
+    return cnt;
+}
+    
+    int maxProductSubArray(vector<int>& nums) {
+    int prod1 = nums[0],prod2 = nums[0],result = nums[0];
+    
+    for(int i=1;i<nums.size();i++) {
+        int temp = max({nums[i],prod1*nums[i],prod2*nums[i]});
+        prod2 = min({nums[i],prod1*nums[i],prod2*nums[i]});
+        prod1 = temp;
+        
+        result = max(result,prod1);
+    }
+    
+    return result;
+}
+
+vector<vector<int>> triplet(int n, vector<int> &arr) {
+    vector<vector<int>> ans;
+    sort(arr.begin(), arr.end());
+    for (int i = 0; i < n; i++) {
+        //remove duplicates:
+        if (i != 0 && arr[i] == arr[i - 1]) continue;
+
+        //moving 2 pointers:
+        int j = i + 1;
+        int k = n - 1;
+        while (j < k) {
+            int sum = arr[i] + arr[j] + arr[k];
+            if (sum < 0) {
+                j++;
+            }
+            else if (sum > 0) {
+                k--;
+            }
+            else {
+                vector<int> temp = {arr[i], arr[j], arr[k]};
+                ans.push_back(temp);
+                j++;
+                k--;
+                //skip the duplicates:
+                while (j < k && arr[j] == arr[j - 1]) j++;
+                while (j < k && arr[k] == arr[k + 1]) k--;
+            }
+        }
+    }
+    return ans;
+}
+
+int longestSuccessiveElements(vector<int>&a) {
+    int n = a.size();
+    if (n == 0) return 0;
+
+    int longest = 1;
+    unordered_set<int> st;
+    //put all the array elements into set:
+    for (int i = 0; i < n; i++) {
+        st.insert(a[i]);
+    }
+
+    //Find the longest sequence:
+    for (auto it : st) {
+        //if 'it' is a starting number:
+        if (st.find(it - 1) == st.end()) {
+            //find consecutive numbers:
+            int cnt = 1;
+            int x = it;
+            while (st.find(x + 1) != st.end()) {
+                x = x + 1;
+                cnt = cnt + 1;
+            }
+            longest = max(longest, cnt);
+        }
+    }
+    return longest;
+
+}
 
 
 int main(){
@@ -683,7 +869,7 @@ int main(){
     }
 
     // cout << smallestDistancePair(vec, k) << endl;
-    cout << maxSubArraySum(vec) << endl;
+    // cout << maxSubArraySum(vec) << endl;
     // sortColors(vec);
     // printVector(vec);
     // printVector(countSmaller(vec));
